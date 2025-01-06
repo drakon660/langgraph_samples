@@ -1,0 +1,1 @@
+The best model for running tool locally using ollama is qwen2.5:7b 05-01-2025
