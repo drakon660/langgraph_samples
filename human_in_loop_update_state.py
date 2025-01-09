@@ -102,7 +102,9 @@ try:
 
     stream_graph_updates("Tell me what I was asking about?")
 
-    for message in graph.get_state(thread).values["messages"]:
+    state = graph.get_state(thread)
+
+    for message in state.values["messages"]:
         logger.info(message)
 
 

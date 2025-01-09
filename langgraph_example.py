@@ -38,20 +38,20 @@ memory = MemorySaver()
 
 thread = {"configurable": {"thread_id":"1"}}
 
-graph = builder.compile(checkpointer=memory, interrupt_after=["human_feedback"])
+graph = builder.compile(checkpointer=memory)
 
 user_input = {"input" : "hello_word"}
 
-for event in graph.stream(user_input, thread):
+for event in graph.stream(user_input):
     print(graph.get_state(thread).values)
 
-graph.update_state(thread,{"user_feedback": user_input}, as_node="human_feedback")
+#graph.update_state(thread,{"user_feedback": user_input}, as_node="human_feedback")
 
-print("---state after update---")
-print(graph.get_state(thread).values)
+#print("---state after update---")
+#print(graph.get_state(thread).values)
 
-for event in graph.stream(None, thread):
-    print(graph.get_state(thread).values)
+#for event in graph.stream(None, thread):
+ #   print(graph.get_state(thread).values)
 
 
 

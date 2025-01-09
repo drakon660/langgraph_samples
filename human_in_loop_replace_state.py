@@ -10,6 +10,7 @@ import logging
 from tools import get_current_time_and_date, save_graph_as_png, extract_tool_call_ids
 from langgraph.checkpoint.memory import MemorySaver
 
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 memory = MemorySaver()
@@ -51,56 +52,52 @@ graph = graph_builder.compile(
 
 thread = {"configurable": {"thread_id": "1"}}
 
+answer = (
+    "Current date and time is 01 November 2025"
+)
+
+
 def stream_graph_updates(user_input: str):
     logger.info(user_input)
-    # snapshot = graph.get_state (thread)
-    # logger.info(snapshot.next)
-    for event in graph.stream({"messages": [("user", user_input)]}, thread, stream_mode="values"):
-        #logger.info(event)
-        for value in event.values():
-           #logger.info(value)
-            pass
-        #snapshot = graph.get_state(thread)
+    #snapshot = graph.get_state (thread)
+    #logger.info(snapshot.next)
+    for event in graph.stream({"messages": [("user", user_input)]}, thread):
+        g = event
+        snapshot = graph.get_state(thread)
         #logger.info(snapshot.values)
-
-#PROBLEMATIC EXAMPLE SEE IT LATER
 
 try:
     user_input = "What is the current time?"
     stream_graph_updates(user_input)
 
     snapshot = graph.get_state(thread)
-    existing_message = snapshot.values["messages"][-1]
+    existing_message = snapshot.values["messages"][0]
 
-    #logger.info("Original")
-    #logger.info(existing_message.id)
-    #logger.info(existing_message.tool_calls[0])
-    new_tool_call = existing_message.tool_calls[0].copy()
-    #new_tool_call["args"]["query"] = "What is the current time minus one year"
     new_message = HumanMessage(
-        content=existing_message.content,
-        tool_calls=[new_tool_call],
+        content="What is capital of poland?",
         # Important! The ID is how LangGraph knows to REPLACE the message in the state rather than APPEND this messages
         id=existing_message.id,
     )
 
-    # logger.info("Updated")
-    # logger.info(new_message.tool_calls[0])
-    # logger.info(new_message.id)
-    graph.update_state(thread, {"messages": [new_message]})
+    graph.update_state(
+        # Which state to update
+        thread,
+        # The updated values to provide. The messages in our `State` are "append-only", meaning this will be appended
+        # to the existing state. We will review how to update existing messages in the next section!
+        {"messages": new_message},
+    )
 
-    #logger.info("\n\nTool calls")
-    #logger.info(graph.get_state(thread).values["messages"][-1].tool_calls)
+    # logger.info("Last 3 messages;")
+    # for message in graph.get_state(thread).values["messages"][-3:]:
+    #     logger.info(message)
 
     stream_graph_updates("Tell me what I was asking about?")
 
-    now = graph.get_state(thread)
-    for message in now.values["messages"]:
+    state = graph.get_state(thread)
+
+    for message in state.values["messages"]:
         logger.info(message)
-    #logger.info(graph.get_state(thread).values["messages"][-4].content)
 
 
 except Exception as e:
     logger.error(e)
-
-#PROBLEMATIC EXAMPLE SEE IT LATER
