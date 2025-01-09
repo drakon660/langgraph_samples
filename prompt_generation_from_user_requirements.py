@@ -32,23 +32,18 @@ class PromptInstructions(BaseModel):
     constraints: List[str]
     requirements: List[str]
 
-AZURE_API_KEY = os.getenv("AZURE_API_KEY", "7RKlcoDRfg9SXiWxG0mtDT5GvcjAF3m3DvqXFFHtmc2kqQrzovAzJQQJ99AJACYeBjFXJ3w3AAAAACOGsmEk")
+AZURE_API_KEY = os.getenv("AZURE_API_KEY", "")
 API_VERSION = os.getenv("API_VERSION", "2024-08-01-preview")
 AZURE_ENDPOINT= os.getenv("AZURE_ENDPOINT","https://ai-services-o.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview")
 AZURE_MODEL_NAME = os.getenv("AZURE_MODEL_NAME","gpt-4o")
 
-#llm = ChatOllama(model="qwen2.5:14b")
 llm = AzureChatOpenAI(
-   #  api_key="7RKlcoDRfg9SXiWxG0mtDT5GvcjAF3m3DvqXFFHtmc2kqQrzovAzJQQJ99AJACYeBjFXJ3w3AAAAACOGsmEk",
-   # api_version="2024-08-01-preview",
-   #    model_name="gpt-4o",
     api_key=AZURE_API_KEY,
     api_version=API_VERSION,
     model_name=AZURE_MODEL_NAME,
     temperature=0,
     max_tokens=60,
     max_retries=2,
-    #azure_endpoint="https://ai-services-o.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"
     azure_endpoint=AZURE_ENDPOINT
 )
 
