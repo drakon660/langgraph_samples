@@ -1,7 +1,7 @@
 import logging
 from langchain_ollama import ChatOllama
 
-from ollama_run_graph_with_tool import get_current_time_and_date
+from run_graph_with_tool import get_current_time_and_date
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

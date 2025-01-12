@@ -14,9 +14,12 @@ def step_2(state):
     print("---Step 2---")
     pass
 
-def human_feedback(state):
+def human_feedback(state:State):
     print("---human_feedback---")
-    pass
+
+    return {
+        "user_feedback": "dupa",
+    }
 
 def step_3(state):
     print("---Step 3---")
@@ -42,16 +45,19 @@ graph = builder.compile(checkpointer=memory)
 
 user_input = {"input" : "hello_word"}
 
-for event in graph.stream(user_input):
-    print(graph.get_state(thread).values)
+result = graph.invoke(user_input, thread)
+print(result)
 
-#graph.update_state(thread,{"user_feedback": user_input}, as_node="human_feedback")
-
-#print("---state after update---")
-#print(graph.get_state(thread).values)
-
-#for event in graph.stream(None, thread):
- #   print(graph.get_state(thread).values)
+# for event in graph.stream(user_input, thread):
+#     print(graph.get_state(thread).values)
+#
+# #graph.update_state(thread,{"user_feedback": user_input}, as_node="human_feedback")
+#
+# print("---state after update---")
+# print(graph.get_state(thread).values)
+#
+# for event in graph.stream(None, thread):
+#    print(graph.get_state(thread).values)
 
 
 
