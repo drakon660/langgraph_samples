@@ -46,30 +46,29 @@ graph_builder.set_finish_point("chatbot")
 thread = {"configurable": {"thread_id": "1"}}
 graph = graph_builder.compile(checkpointer=memory, interrupt_before=["tools"])
 
-
 #tuple error before or after interrupt
 
-def stream_graph_updates(user_input: str):
-    logger.info(user_input)
-    snapshot = graph.get_state (thread)
-    logger.info(snapshot.next)
-    for event in graph.stream({"messages": [("user", user_input)]}, thread):
-        snapshot = graph.get_state(thread)
-        logger.info(snapshot.values)
-        for value in event.values():
-            response = value["messages"][-1].content
-            logger.info(response)
-
-while True:
-    try:
-        # user_input = input("User: ")
-        # if user_input.lower() in ["quit", "exit", "q"]:
-        #     print("Goodbye!")
-        #     break
-
-        user_input = "What is the current time?"
-
-        stream_graph_updates(user_input)
-    except Exception as e:
-        logger.error(e)
-        break
+# def stream_graph_updates(user_input: str):
+#     logger.info(user_input)
+#     snapshot = graph.get_state (thread)
+#     logger.info(snapshot.next)
+#     for event in graph.stream({"messages": [("user", user_input)]}, thread):
+#         snapshot = graph.get_state(thread)
+#         logger.info(snapshot.values)
+#         for value in event.values():
+#             response = value["messages"][-1].content
+#             logger.info(response)
+#
+# while True:
+#     try:
+#         # user_input = input("User: ")
+#         # if user_input.lower() in ["quit", "exit", "q"]:
+#         #     print("Goodbye!")
+#         #     break
+#
+#         user_input = "What is the current time?"
+#
+#         stream_graph_updates(user_input)
+#     except Exception as e:
+#         logger.error(e)
+#         break

@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./human_in_loop_tool_executor.py:graph"
+  },
+  "env": ".env"
+}

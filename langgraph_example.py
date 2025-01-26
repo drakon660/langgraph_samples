@@ -44,7 +44,7 @@ thread = {"configurable": {"thread_id":"1"}}
 graph = builder.compile(checkpointer=memory)
 
 user_input = {"input" : "hello_word"}
-
+#
 result = graph.invoke(user_input, thread)
 print(result)
 
